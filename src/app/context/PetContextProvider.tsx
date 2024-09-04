@@ -10,8 +10,9 @@ type Props = {
 type TPetContext = {
   pets: Pets[];
   selectedPetId: string | null;
-  setPets: React.Dispatch<React.SetStateAction<Pets[]>>;
   handleUpdatePetId: (id: string) => void;
+  handleGetPet: Pets | undefined;
+  PetsCount: number;
 };
 
 export const PetContext = createContext<TPetContext | null>(null);
@@ -19,6 +20,10 @@ export const PetContext = createContext<TPetContext | null>(null);
 function PetContextProvider({ data, children }: Props) {
   const [pets, setPets] = useState(data);
   const [selectedPetId, setSelectedPetId] = useState<string | null>(null);
+
+  const handleGetPet = pets.find((pet) => pet.id === selectedPetId);
+
+  const PetsCount = pets.length;
 
   const handleUpdatePetId = (id: string) => {
     setSelectedPetId(id);
@@ -29,8 +34,9 @@ function PetContextProvider({ data, children }: Props) {
       value={{
         pets,
         selectedPetId,
-        setPets,
+        handleGetPet,
         handleUpdatePetId,
+        PetsCount,
       }}
     >
       {children}

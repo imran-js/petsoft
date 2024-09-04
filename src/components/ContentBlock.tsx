@@ -1,6 +1,15 @@
-function ContentBlock({ children }: { children: React.ReactNode }) {
+import { cn } from "@/lib/utils";
+
+type Props = { children: React.ReactNode; className?: string };
+
+function ContentBlock({ children, className }: Props) {
   return (
-    <div className="w-full h-full bg-[#f7f8fa] shadow-sm rounded-md overflow-hidden ">
+    <div
+      className={cn(
+        "w-full h-full bg-[#f7f8fa] shadow-sm rounded-md overflow-hidden ",
+        className
+      )}
+    >
       {children}
     </div>
   );

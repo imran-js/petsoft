@@ -1,5 +1,6 @@
 import Branding from "@/components/Branding";
 import ContentBlock from "@/components/ContentBlock";
+import PetButton from "@/components/PetButton";
 import PetDetail from "@/components/PetDetail";
 import PetList from "@/components/PetList";
 import SearchForm from "@/components/searchForm";
@@ -18,6 +19,9 @@ async function DashboardPage() {
         <div className="relative md:row-start-2 md:row-span-full md:col-start-1 md:col-span-1">
           <ContentBlock>
             <PetList />
+            <div className="absolute bottom-4 right-4">
+              <PetButton type="Add" />
+            </div>
           </ContentBlock>
         </div>
         <div className="md:row-start-1 md:row-span-full md:col-start-2 md:col-span-full">

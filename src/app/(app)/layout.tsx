@@ -3,6 +3,7 @@ import AppHeader from "@/components/appHeader";
 import BackgroundPattern from "@/components/backgroundPattern";
 import PetContextProvider from "../context/PetContextProvider";
 import { Pets } from "@/components/types/types";
+import SearchContextProvider from "../context/SearchContextProvider";
 
 type Prop = {
   children: React.ReactNode;
@@ -22,7 +23,9 @@ async function layout({ children }: Prop) {
       <BackgroundPattern />
       <div className="max-w-[1050px] mx-auto px-4 flex flex-col min-h-screen">
         <AppHeader />
-        <PetContextProvider data={data}>{children}</PetContextProvider>
+        <SearchContextProvider>
+          <PetContextProvider data={data}>{children}</PetContextProvider>
+        </SearchContextProvider>
         <AppFooter />
       </div>
     </>

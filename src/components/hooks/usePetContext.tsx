@@ -1,5 +1,5 @@
 import { PetContext } from "@/app/context/PetContextProvider";
-import React, { useContext } from "react";
+import { useContext } from "react";
 
 function usePetContext() {
   const context = useContext(PetContext);
