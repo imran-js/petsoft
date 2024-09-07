@@ -1,3 +1,4 @@
+"use client";
 import React from "react";
 import { Button } from "./ui/button";
 import { PlusIcon } from "@radix-ui/react-icons";
@@ -17,6 +18,7 @@ type Props = {
 };
 
 function PetButton({ children, type, onClick }: Props) {
+  const [open, setOpen] = React.useState(false);
   if (type === "Checkout") {
     return (
       <Button onClick={onClick} variant="secondary">
@@ -26,7 +28,7 @@ function PetButton({ children, type, onClick }: Props) {
   }
   if (type === "Add" || type === "Edit") {
     return (
-      <Dialog>
+      <Dialog open={open} onOpenChange={setOpen}>
         <DialogTrigger asChild>
           {type === "Add" ? (
             <Button size="icon">
@@ -44,7 +46,7 @@ function PetButton({ children, type, onClick }: Props) {
               {type === "Add" ? "Add New Pet" : "Edit Pet"}
             </DialogTitle>
           </DialogHeader>
-          <PetForm />
+          <PetForm actionType={type} onFormSubmit={() => setOpen(false)} />
         </DialogContent>
       </Dialog>
     );

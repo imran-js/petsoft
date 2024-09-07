@@ -39,17 +39,22 @@ function PetContextProvider({ data, children }: Props) {
   };
 
   const handleAddPet = (pet: Pets) => {
-    setPets([...pets, pet]);
+    const newPet = pet;
+    setPets((pre) => [...pre, newPet]);
   };
 
   const handleUpdatePet = (pet: Pets) => {
-    const updatedPets = pets.map((p) => {
-      if (p.id === pet.id) {
-        return pet;
-      }
-      return p;
+    setPets((pre) => {
+      const updatedPets = pre.map((p) => {
+        if (p.id === pet.id) {
+          return {
+            ...p,
+          };
+        }
+        return p;
+      });
+      return updatedPets;
     });
-    setPets(updatedPets);
   };
 
   return (
