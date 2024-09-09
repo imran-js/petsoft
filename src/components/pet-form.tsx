@@ -1,42 +1,52 @@
 "use client";
+import { AddPet } from "@/app/actions/actions";
 import usePetContext from "./hooks/usePetContext";
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
 import { Label } from "./ui/label";
 import { Textarea } from "./ui/textarea";
+import PetFormBtn from "./pet-form-btn";
 
 type Props = {
   actionType: "Add" | "Edit";
   onFormSubmit?: () => void;
 };
 
-function PetForm({ actionType }: Props) {
+function PetForm({ actionType, onFormSubmit }: Props) {
   const { handleAddPet, handleUpdatePet, handleGetPet } = usePetContext();
   const ActivePet = handleGetPet;
 
-  const onSubmitHandler = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    const formData = new FormData(e.currentTarget);
-    const data = Object.fromEntries(formData.entries());
-    const newPet = {
-      id: Math.floor(Math.random() * 1000).toString(),
-      name: data.name.toString(),
-      ownerName: data.ownerName.toString(),
-      imageUrl:
-        data.imageUrl.toString() ||
-        "https://plus.unsplash.com/premium_photo-1664371206019-a82ba8d7c2e2?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OXx8cGV0c3xlbnwwfHwwfHx8MA%3D%3D",
-      age: parseInt(data.age.toString()),
-      notes: data.notes.toString(),
-    };
-    if (actionType === "Edit") {
-      handleUpdatePet(newPet);
-    } else if (actionType === "Add") {
-      handleAddPet(newPet);
-    }
-  };
+  // const onSubmitHandler = (e: React.FormEvent<HTMLFormElement>) => {
+  //   e.preventDefault();
+  //   const formData = new FormData(e.currentTarget);
+  //   const data = Object.fromEntries(formData.entries());
+  //   const newPet = {
+  //     id: Math.floor(Math.random() * 1000).toString(),
+  //     name: data.name.toString(),
+  //     ownerName: data.ownerName.toString(),
+  //     imageUrl:
+  //       data.imageUrl.toString() ||
+  //       "https://res.cloudinary.com/iib-webdevs/image/upload/v1592765719/DontDeleteMe/ditnoezhm8nng3ikagt0.jpg",
+  //     age: parseInt(data.age.toString()),
+  //     notes: data.notes.toString(),
+  //   };
+  //   if (actionType === "Edit") {
+  //     handleUpdatePet(newPet);
+  //     onFormSubmit && onFormSubmit();
+  //   } else if (actionType === "Add") {
+  //     handleAddPet(newPet);
+  //     onFormSubmit && onFormSubmit();
+  //   }
+  // };
 
   return (
-    <form onSubmit={onSubmitHandler} className="flex flex-col">
+    <form
+      action={(formData) => {
+        AddPet(formData);
+        onFormSubmit && onFormSubmit();
+      }}
+      className="flex flex-col"
+    >
       <div className="space-y-3  ">
         <div className="space-y-1 ">
           <Label htmlFor="name">Name</Label>
@@ -63,7 +73,6 @@ function PetForm({ actionType }: Props) {
             id="imageUrl"
             name="imageUrl"
             type="text"
-            required
             defaultValue={actionType === "Add" ? "" : ActivePet?.imageUrl}
           />
         </div>
@@ -88,9 +97,7 @@ function PetForm({ actionType }: Props) {
           />
         </div>
       </div>
-      <Button className="mt-5 self-end">
-        {actionType === "Add" ? "Add Pet" : "Edit Pet"}
-      </Button>
+      <PetFormBtn actionType={actionType} />
     </form>
   );
 }

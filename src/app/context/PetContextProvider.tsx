@@ -1,6 +1,7 @@
 "use client";
 import { Pets } from "@/components/types/types";
 import React, { createContext, useContext, useState } from "react";
+import { AddPet } from "../actions/actions";
 
 type Props = {
   children: React.ReactNode;
@@ -21,7 +22,8 @@ type TPetContext = {
 export const PetContext = createContext<TPetContext | null>(null);
 
 function PetContextProvider({ data, children }: Props) {
-  const [pets, setPets] = useState(data);
+  let pets = data;
+  // const [pets, setPets] = useState(data);
   const [selectedPetId, setSelectedPetId] = useState<string | null>(null);
 
   const handleGetPet = pets.find((pet) => pet.id === selectedPetId);
@@ -39,21 +41,30 @@ function PetContextProvider({ data, children }: Props) {
   };
 
   const handleAddPet = (pet: Pets) => {
-    const newPet = pet;
-    setPets((pre) => [...pre, newPet]);
+    if (pet) {
+      delete pet?.id;
+      AddPet(pet);
+    }
   };
 
-  const handleUpdatePet = (pet: Pets) => {
+  const handleUpdatePet = (pet: Omit<Pets, "id">) => {
+    // Take pet and remove id property and construct a new pet object
+    const updatedPet = { ...pet, id: selectedPetId };
+
+    //@ts-ignore
+    delete updatedPet?.id;
+
+    //@ts-ignore
     setPets((pre) => {
-      const updatedPets = pre.map((p) => {
-        if (p.id === pet.id) {
+      return pre.map((pet) => {
+        if (pet.id === selectedPetId) {
           return {
-            ...p,
+            ...pet,
+            ...updatedPet,
           };
         }
-        return p;
+        return pet;
       });
-      return updatedPets;
     });
   };
 
