@@ -15,13 +15,14 @@ type Props = {
   children?: React.ReactNode;
   type: "Add" | "Edit" | "Checkout";
   onClick?: () => void;
+  disabled?: boolean;
 };
 
-function PetButton({ children, type, onClick }: Props) {
+function PetButton({ children, type, onClick, disabled }: Props) {
   const [open, setOpen] = React.useState(false);
   if (type === "Checkout") {
     return (
-      <Button onClick={onClick} variant="secondary">
+      <Button disabled={disabled} onClick={onClick} variant="secondary">
         {children}
       </Button>
     );

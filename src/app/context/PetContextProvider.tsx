@@ -1,7 +1,7 @@
 "use client";
 import { Pets } from "@/components/types/types";
 import React, { createContext, useContext, useState } from "react";
-import { AddPet } from "../actions/actions";
+import { AddPet, UpdatePet } from "../actions/actions";
 
 type Props = {
   children: React.ReactNode;
@@ -49,23 +49,25 @@ function PetContextProvider({ data, children }: Props) {
 
   const handleUpdatePet = (pet: Omit<Pets, "id">) => {
     // Take pet and remove id property and construct a new pet object
-    const updatedPet = { ...pet, id: selectedPetId };
+    // const updatedPet = { ...pet, id: selectedPetId };
 
     //@ts-ignore
-    delete updatedPet?.id;
+    delete pet?.id;
+
+    UpdatePet(pet);
 
     //@ts-ignore
-    setPets((pre) => {
-      return pre.map((pet) => {
-        if (pet.id === selectedPetId) {
-          return {
-            ...pet,
-            ...updatedPet,
-          };
-        }
-        return pet;
-      });
-    });
+    // setPets((pre) => {
+    //   return pre.map((pet) => {
+    //     if (pet.id === selectedPetId) {
+    //       return {
+    //         ...pet,
+    //         ...updatedPet,
+    //       };
+    //     }
+    //     return pet;
+    //   });
+    // });
   };
 
   return (

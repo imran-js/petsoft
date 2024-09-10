@@ -1,11 +1,11 @@
 "use client";
-import { AddPet } from "@/app/actions/actions";
+import { AddPet, UpdatePet } from "@/app/actions/actions";
 import usePetContext from "./hooks/usePetContext";
-import { Button } from "./ui/button";
 import { Input } from "./ui/input";
 import { Label } from "./ui/label";
 import { Textarea } from "./ui/textarea";
 import PetFormBtn from "./pet-form-btn";
+import { toast } from "sonner";
 
 type Props = {
   actionType: "Add" | "Edit";
@@ -13,7 +13,7 @@ type Props = {
 };
 
 function PetForm({ actionType, onFormSubmit }: Props) {
-  const { handleAddPet, handleUpdatePet, handleGetPet } = usePetContext();
+  const { handleGetPet } = usePetContext();
   const ActivePet = handleGetPet;
 
   // const onSubmitHandler = (e: React.FormEvent<HTMLFormElement>) => {
@@ -41,8 +41,21 @@ function PetForm({ actionType, onFormSubmit }: Props) {
 
   return (
     <form
-      action={(formData) => {
-        AddPet(formData);
+      action={async (formData) => {
+        if (actionType === "Edit") {
+          const error = await UpdatePet(ActivePet?.id, formData);
+          if (error) {
+            toast.error("An error occurred");
+            return;
+          }
+        }
+        if (actionType === "Add") {
+          const error = await AddPet(formData);
+          if (error) {
+            toast.error("An error occurred");
+            return;
+          }
+        }
         onFormSubmit && onFormSubmit();
       }}
       className="flex flex-col"

@@ -15,8 +15,16 @@ model Pet {
   name      String
   age       Int
   ownerName String
-  imageUrl  String
+  imageUrl  String   @default("https://res.cloudinary.com/iib-webdevs/image/upload/v1592765719/DontDeleteMe/ditnoezhm8nng3ikagt0.jpg")
   notes     String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model User {
+  id        String   @id @default(uuid())
+  email     String   @unique
+  password  String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }

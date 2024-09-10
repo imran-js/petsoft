@@ -5,6 +5,7 @@ import PetContextProvider from "../context/PetContextProvider";
 import { Pets } from "@/components/types/types";
 import SearchContextProvider from "../context/SearchContextProvider";
 import prisma from "@/lib/db";
+import { Toaster } from "sonner";
 
 type Prop = {
   children: React.ReactNode;
@@ -23,6 +24,8 @@ async function layout({ children }: Prop) {
         </SearchContextProvider>
         <AppFooter />
       </div>
+
+      <Toaster position="bottom-right" />
     </>
   );
 }
