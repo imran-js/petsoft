@@ -1,10 +1,8 @@
 "use client";
 import Image from "next/image";
 import usePetContext from "./hooks/usePetContext";
-import { Pets } from "./types/types";
 import PetButton from "./PetButton";
-import { DeletePet } from "@/app/actions/actions";
-import { useTransition } from "react";
+import { PetWithId } from "./types/types";
 
 function PetDetail() {
   const { handleGetPet } = usePetContext();
@@ -26,7 +24,7 @@ function PetDetail() {
 }
 
 type Props = {
-  pet: Pets;
+  pet: PetWithId;
   disabled?: boolean;
 };
 
@@ -41,7 +39,6 @@ function EmptyView() {
 function TopBar({ pet }: Props) {
   const { handlePetCheckout } = usePetContext();
 
-  const [isPending, startTransition] = useTransition();
   return (
     <div className="flex items-center px-8 py-5 bg-white border-b border-light shadow-lg">
       <Image
@@ -51,15 +48,12 @@ function TopBar({ pet }: Props) {
         height={75}
         width={75}
       />
-      <h2 className="text-3xl font-semibold leading-7 ml-5">{pet?.name}</h2>
+      <h2 className="text-3xl font-semibold leading-7 ml-5">{pet.name}</h2>
       <div className="ml-auto space-x-2">
         <PetButton type="Edit">Edit</PetButton>
         <PetButton
-          disabled={isPending}
           onClick={async () => {
-            startTransition(async () => {
-              await DeletePet(pet.id);
-            });
+            handlePetCheckout(pet.id);
           }}
           type="Checkout"
         >
@@ -77,11 +71,11 @@ function OtherDetails({ pet }: Props) {
         <h3 className="text-[13px] font-medium uppercase text-zinc-700">
           Owner Name
         </h3>
-        <p>{pet?.name}</p>
+        <p>{pet.name}</p>
       </div>
       <div>
         <h3 className="text-[13px] font-medium uppercase text-zinc-700">Age</h3>
-        <p>{pet?.age}</p>
+        <p>{pet.age}</p>
       </div>
     </div>
   );
@@ -90,7 +84,7 @@ function OtherDetails({ pet }: Props) {
 function Notes({ pet }: Props) {
   return (
     <section className="bg-white py-5 px-8 rounded flex-1 mb-9 mx-8 border border-light shadow-lg ">
-      {pet?.notes}
+      {pet.notes}
     </section>
   );
 }

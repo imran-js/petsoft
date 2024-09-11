@@ -1,11 +1,10 @@
 "use client";
-import { AddPet, UpdatePet } from "@/app/actions/actions";
+
 import usePetContext from "./hooks/usePetContext";
 import { Input } from "./ui/input";
 import { Label } from "./ui/label";
 import { Textarea } from "./ui/textarea";
 import PetFormBtn from "./pet-form-btn";
-import { toast } from "sonner";
 
 type Props = {
   actionType: "Add" | "Edit";
@@ -13,7 +12,9 @@ type Props = {
 };
 
 function PetForm({ actionType, onFormSubmit }: Props) {
-  const { handleGetPet } = usePetContext();
+  const { selectedPetId, handleUpdatePet, handleAddPet, handleGetPet } =
+    usePetContext();
+
   const ActivePet = handleGetPet;
 
   // const onSubmitHandler = (e: React.FormEvent<HTMLFormElement>) => {
@@ -42,21 +43,23 @@ function PetForm({ actionType, onFormSubmit }: Props) {
   return (
     <form
       action={async (formData) => {
+        onFormSubmit && onFormSubmit();
+        const petDate = {
+          name: formData.get("name") as string,
+          ownerName: formData.get("ownerName") as string,
+          imageUrl:
+            (formData.get("imageUrl") as string) ||
+            "https://res.cloudinary.com/iib-webdevs/image/upload/v1592765719/DontDeleteMe/ditnoezhm8nng3ikagt0.jpg",
+          age: Number(formData.get("age")) as number,
+          notes: formData.get("notes") as string,
+        };
+
         if (actionType === "Edit") {
-          const error = await UpdatePet(ActivePet?.id, formData);
-          if (error) {
-            toast.error("An error occurred");
-            return;
-          }
+          await handleUpdatePet(selectedPetId ?? "", petDate);
         }
         if (actionType === "Add") {
-          const error = await AddPet(formData);
-          if (error) {
-            toast.error("An error occurred");
-            return;
-          }
+          await handleAddPet(petDate);
         }
-        onFormSubmit && onFormSubmit();
       }}
       className="flex flex-col"
     >

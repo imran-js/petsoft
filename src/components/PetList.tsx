@@ -3,7 +3,6 @@ import Image from "next/image";
 import usePetContext from "./hooks/usePetContext";
 import { cn } from "@/lib/utils";
 import useSearchContext from "./hooks/useSearchContext";
-import PetButton from "./PetButton";
 
 function PetList() {
   const { pets, selectedPetId, handleUpdatePetId } = usePetContext();

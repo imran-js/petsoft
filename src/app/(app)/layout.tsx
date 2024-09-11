@@ -2,7 +2,6 @@ import AppFooter from "@/components/appFooter";
 import AppHeader from "@/components/appHeader";
 import BackgroundPattern from "@/components/backgroundPattern";
 import PetContextProvider from "../context/PetContextProvider";
-import { Pets } from "@/components/types/types";
 import SearchContextProvider from "../context/SearchContextProvider";
 import prisma from "@/lib/db";
 import { Toaster } from "sonner";

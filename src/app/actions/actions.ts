@@ -1,23 +1,16 @@
 "use server";
 
+import { PetEssentials, PetWithId } from "@/components/types/types";
 import prisma from "@/lib/db";
 import { sleeper } from "@/lib/utils";
 import { revalidatePath } from "next/cache";
 
-export async function AddPet(formData) {
+export async function AddPet(petDate: PetEssentials) {
   await sleeper(2000);
 
   try {
     await prisma.pet.create({
-      data: {
-        name: formData.get("name"),
-        ownerName: formData.get("ownerName"),
-        imageUrl:
-          formData.get("imageUrl") ||
-          "https://res.cloudinary.com/iib-webdevs/image/upload/v1592765719/DontDeleteMe/ditnoezhm8nng3ikagt0.jpg",
-        age: parseInt(formData.get("age")),
-        notes: formData.get("notes"),
-      },
+      data: petDate,
     });
 
     revalidatePath("/app", "layout");
@@ -26,7 +19,7 @@ export async function AddPet(formData) {
   }
 }
 
-export async function GetSinglePet(petId) {
+export async function GetSinglePet(petId: PetWithId["id"]) {
   await sleeper(2000);
 
   try {
@@ -41,7 +34,7 @@ export async function GetSinglePet(petId) {
     return { error: "Something went wrong. could not get the Pet." };
   }
 }
-export async function DeletePet(petId) {
+export async function DeletePet(petId: PetWithId["id"]) {
   await sleeper(2000);
 
   try {
@@ -57,7 +50,10 @@ export async function DeletePet(petId) {
   }
 }
 
-export async function UpdatePet(petId, formData) {
+export async function UpdatePet(
+  petId: PetWithId["id"],
+  NewPetData: PetEssentials
+) {
   await sleeper(2000);
 
   try {
@@ -65,15 +61,7 @@ export async function UpdatePet(petId, formData) {
       where: {
         id: petId,
       },
-      data: {
-        name: formData.get("name"),
-        ownerName: formData.get("ownerName"),
-        imageUrl:
-          formData.get("imageUrl") ||
-          "https://res.cloudinary.com/iib-webdevs/image/upload/v1592765719/DontDeleteMe/ditnoezhm8nng3ikagt0.jpg",
-        age: parseInt(formData.get("age")),
-        notes: formData.get("notes"),
-      },
+      data: NewPetData,
     });
 
     revalidatePath("/app", "layout");
