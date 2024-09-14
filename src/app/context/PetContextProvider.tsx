@@ -3,6 +3,7 @@ import { PetWithId, PetEssentials } from "@/components/types/types";
 import React, { createContext, useOptimistic, useState } from "react";
 import { AddPet, DeletePet, UpdatePet } from "../actions/actions";
 import { toast } from "sonner";
+import { checkIfProvidedUrlIsImage } from "@/lib/utils";
 
 type Props = {
   children: React.ReactNode;

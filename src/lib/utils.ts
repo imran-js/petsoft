@@ -10,3 +10,7 @@ export function cn(...inputs: ClassValue[]) {
 export function sleeper(ms: number) {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }
+
+export function checkIfProvidedUrlIsImage(url: string) {
+  return url.match(/\.(jpeg|jpg|gif|png)$/) != null;
+}
