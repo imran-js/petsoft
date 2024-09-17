@@ -1,6 +1,6 @@
 import { z } from "zod";
 import { DEFAULT_PET_IMAGE } from "./constants";
-import exp from "constants";
+
 
 export const PetIdSchema = z.string().uuid();
 
