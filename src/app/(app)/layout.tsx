@@ -11,7 +11,7 @@ type Prop = {
 };
 
 async function layout({ children }: Prop) {
-  const data = await prisma.pet.findMany();
+  const data = await prisma.pet.findMany({});
 
   return (
     <>
