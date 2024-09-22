@@ -27,13 +27,16 @@ function PetForm({ actionType, onFormSubmit }: Props) {
     trigger,
   } = useForm<TFormData>({
     resolver: zodResolver(FormSchema),
-    defaultValues: {
-      name: ActivePet?.name,
-      ownerName: ActivePet?.ownerName,
-      imageUrl: ActivePet?.imageUrl,
-      age: ActivePet?.age,
-      notes: ActivePet?.notes,
-    },
+    defaultValues:
+      actionType === "Edit"
+        ? {
+            name: ActivePet?.name,
+            ownerName: ActivePet?.ownerName,
+            imageUrl: ActivePet?.imageUrl,
+            age: ActivePet?.age,
+            notes: ActivePet?.notes,
+          }
+        : undefined,
   });
 
   return (

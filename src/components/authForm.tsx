@@ -2,14 +2,15 @@ import { Label } from "@radix-ui/react-label";
 import React from "react";
 import { Input } from "./ui/input";
 import { Button } from "./ui/button";
+import { Login, SignUp } from "@/app/actions/actions";
 
 type Props = {
-  btnText: string;
+  type: "login" | "signup";
 };
 
-function AuthForm({ btnText }: Props) {
+function AuthForm({ type }: Props) {
   return (
-    <form>
+    <form action={type === "login" ? Login : SignUp}>
       <div className="space-y-2">
         <Label id="email" htmlFor="email">
           Email
@@ -22,7 +23,7 @@ function AuthForm({ btnText }: Props) {
         </Label>
         <Input name="password" type="password" />
       </div>
-      <Button className="mt-4">{btnText}</Button>
+      <Button className="mt-4">{type}</Button>
     </form>
   );
 }
