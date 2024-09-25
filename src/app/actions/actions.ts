@@ -122,12 +122,25 @@ export async function DeletePet(petId: unknown) {
 }
 
 export async function UpdatePet(petId: unknown, NewPetData: unknown) {
+  const session = await auth();
+  if (!session?.user) {
+    redirect("/login");
+  }
   await sleeper(2000);
 
   const validatedPetId = PetIdSchema.safeParse(petId);
   const validatedPet = FormSchema.safeParse(NewPetData);
   if (!validatedPet.success || !validatedPetId.success) {
     return { error: "Invalid data" };
+  }
+
+  const pet = await prisma.pet.findUnique({
+    where: { id: validatedPetId.data },
+    select: { userId: true },
+  });
+
+  if (pet?.userId !== session.user.id) {
+    return { error: "You are not authorized to update this pet" };
   }
 
   try {

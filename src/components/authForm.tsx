@@ -15,13 +15,13 @@ function AuthForm({ type }: Props) {
         <Label id="email" htmlFor="email">
           Email
         </Label>
-        <Input name="email" type="text" />
+        <Input name="email" type="text" required />
       </div>
       <div className="space-y-2 ">
         <Label id="password" htmlFor="password">
           Password
         </Label>
-        <Input name="password" type="password" />
+        <Input required name="password" type="password" />
       </div>
       <Button className="mt-4">{type}</Button>
     </form>
